@@ -1,0 +1,67 @@
+<div class="app-content">
+  <section class="login-left-container">
+    <p class="login-text">
+      Welcome to the community of volunteers and change makers of tomorrow
+    </p>
+    <img
+      src="../../assets/login-image.png"
+      alt="Login page image"
+      class="login-image"
+    />
+  </section>
+  <section class="login-right-container">
+    <mat-card [style.boxShadow]="'none'">
+      <mat-card-content>
+        <h1 class="login-form-title">Log in</h1>
+        <form [formGroup]="loginForm" (submit)="userLogin()" name="loginForm">
+          <div>
+            <span class="material-icons md-18 login-icons">mail_outlined</span>
+            <mat-form-field class="login-form-input">
+              <mat-label for="email">Enter your email</mat-label>
+              <input
+                matInput
+                placeholder="pat@example.com"
+                id="email"
+                formControlName="email"
+                required
+              />
+              <mat-error *ngIf="loginForm.controls['email'].invalid">{{
+                getErrorMessage("email")
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <span class="material-icons md-18 login-icons">lock_outlined</span>
+            <mat-form-field class="login-form-input">
+              <mat-label for="password">Enter your password</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                id="password"
+                formControlName="password"
+                required
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+                class="login-eye-btn"
+                type="button"
+              >
+                <span class="material-icons md-18 login-btn">
+                  {{ hide ? "visibility_off" : "visibility" }}</span
+                >
+              </button>
+              <mat-error *ngIf="loginForm.controls['password'].invalid">{{
+                getErrorMessage("password")
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+          <button type="submit" class="login-submit-btn">Log in</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>
