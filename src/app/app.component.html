@@ -1,25 +1,27 @@
 <main>
   <header class="app-nav">
     <span class="app-nav-title">Platform commons</span>
-    <div *ngIf="currentURL === '/login'; then loginBtn; else otherBtn"></div>
-    <ng-template #loginBtn>
+    <div *ngIf="currentURL === '/login'; then signupBtn; else otherBtn"></div>
+    <ng-template #signupBtn>
       <button (click)="handleButtonClick('/register')" class="app-nav-btn">
         Sign Up
       </button>
     </ng-template>
     <ng-template #otherBtn>
       <div
-        *ngIf="currentURL === '/register'; then signupBtn; else homeBtn"
+        *ngIf="
+          currentURL === '/register' || currentSession === null;
+          then loginBtn;
+          else homeBtn
+        "
       ></div>
-      <ng-template #signupBtn>
+      <ng-template #loginBtn>
         <button (click)="handleButtonClick('/login')" class="app-nav-btn">
           Login
         </button>
       </ng-template>
       <ng-template #homeBtn>
-        <button (click)="logUserOut()" class="app-nav-btn">
-          Log out
-        </button>
+        <button (click)="logUserOut()" class="app-nav-btn">Log out</button>
       </ng-template>
     </ng-template>
   </header>
@@ -30,7 +32,7 @@
     </div>
     <ng-template #homeContent>
       <h1 [style]="{ textAlign: 'center', marginTop: '2rem' }">
-        You have been redirected to the home page!
+        This is the home page!
       </h1>
     </ng-template>
   </section>

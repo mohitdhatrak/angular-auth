@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'angular-auth';
 
   currentURL = '';
+  currentSession: any;
 
   constructor(private router: Router, private location: Location) {}
 
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   updateNavbar(): void {
+    this.currentSession = localStorage.getItem('sessionId');
     this.currentURL = this.router.url;
   }
 }
