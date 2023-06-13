@@ -1,0 +1,23 @@
+.app-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #000000;
+  /* box-shadow:; */
+
+  /* position: sticky; */
+}
+
+.app-nav-title {
+  font-size: 1.2rem;
+}
+
+.app-nav-btn {
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #323a46;
+  color: #ffffff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+}

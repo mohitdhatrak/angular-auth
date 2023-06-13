@@ -1,29 +1,35 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { authGuard } from './services/auth.guard';
+import { ErrorComponent } from './modules/shared/error/error.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
-    title: 'Home Page',
+    redirectTo: 'auth',
+    pathMatch: 'full',
   },
   {
-    path: 'login',
-    component: LoginComponent,
-    title: 'Login Page',
+    path: 'auth',
+    loadChildren: () =>
+      import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'register',
-    component: SignupComponent,
-    title: 'Signup Page',
+    path: 'main',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./modules/main/main.module').then((m) => m.MainModule),
+  },
+  {
+    path: '**',
+    component: ErrorComponent,
+    title: 'Error 404',
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [],
 })
 export class AppRoutingModule {}

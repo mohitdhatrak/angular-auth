@@ -1,39 +1,5 @@
 <main>
-  <header class="app-nav">
-    <span class="app-nav-title">Platform commons</span>
-    <div *ngIf="currentURL === '/login'; then signupBtn; else otherBtn"></div>
-    <ng-template #signupBtn>
-      <button (click)="handleButtonClick('/register')" class="app-nav-btn">
-        Sign Up
-      </button>
-    </ng-template>
-    <ng-template #otherBtn>
-      <div
-        *ngIf="
-          currentURL === '/register' || currentSession === null;
-          then loginBtn;
-          else homeBtn
-        "
-      ></div>
-      <ng-template #loginBtn>
-        <button (click)="handleButtonClick('/login')" class="app-nav-btn">
-          Login
-        </button>
-      </ng-template>
-      <ng-template #homeBtn>
-        <button (click)="logUserOut()" class="app-nav-btn">Log out</button>
-      </ng-template>
-    </ng-template>
-  </header>
+  <app-navbar></app-navbar>
 
-  <section>
-    <div *ngIf="currentURL !== '/'; else homeContent">
-      <router-outlet></router-outlet>
-    </div>
-    <ng-template #homeContent>
-      <h1 [style]="{ textAlign: 'center', marginTop: '2rem' }">
-        This is the home page!
-      </h1>
-    </ng-template>
-  </section>
+  <router-outlet></router-outlet>
 </main>

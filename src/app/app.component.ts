@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Location } from '@angular/common';
+import { AuthService } from './services/auth.service';
+import { NavbarComponent } from './modules/shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -11,31 +10,9 @@ import { Location } from '@angular/common';
 export class AppComponent implements OnInit {
   title = 'angular-auth';
 
-  currentURL = '';
-  currentSession: any;
-
-  constructor(private router: Router, private location: Location) {}
-
-  handleButtonClick(route: any) {
-    this.router.navigate([route]);
-  }
-
-  logUserOut() {
-    localStorage.removeItem('sessionId');
-    localStorage.removeItem('crossSessionId');
-    this.router.navigate(['/login']);
-  }
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.updateNavbar();
-      });
-  }
-
-  updateNavbar(): void {
-    this.currentSession = localStorage.getItem('sessionId');
-    this.currentURL = this.router.url;
+    this.authService.setUser();
   }
 }

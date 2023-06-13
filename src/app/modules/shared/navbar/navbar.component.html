@@ -1,0 +1,24 @@
+<header class="app-nav">
+  <span class="app-nav-title">Platform commons</span>
+  <div
+    *ngIf="currentURL === '/auth/login'; then signupBtn; else otherBtn"
+  ></div>
+  <ng-template #signupBtn>
+    <button (click)="handleButtonClick('/auth/register')" class="app-nav-btn">
+      Sign Up
+    </button>
+  </ng-template>
+  <ng-template #otherBtn>
+    <div
+      *ngIf="currentURL === '/auth/register'; then loginBtn; else logoutBtn"
+    ></div>
+    <ng-template #loginBtn>
+      <button (click)="handleButtonClick('/auth/login')" class="app-nav-btn">
+        Login
+      </button>
+    </ng-template>
+    <ng-template #logoutBtn>
+      <button (click)="logUserOut()" class="app-nav-btn">Log out</button>
+    </ng-template>
+  </ng-template>
+</header>

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,7 @@ export class LoginComponent {
     ]),
   });
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
   getErrorMessage(text: string) {
     if (text === 'email') {
@@ -45,35 +44,6 @@ export class LoginComponent {
       return;
     }
 
-    this.loginApiCall();
-  }
-
-  loginApiCall() {
-    const loginData = this.loginForm.value;
-    const finalData = {
-      userLogin: loginData.email,
-      password: loginData.password,
-      tenantLogin: 'world',
-    };
-    console.log(finalData);
-
-    this.http
-      .post(
-        'https://dev.platformcommons.org/gateway/commons-iam-service/api/v1/obo/cross/login?crossTenant=uandi',
-        finalData
-      )
-      .subscribe({
-        next: (value: any) => {
-          if (value.sessionId) {
-            console.log(value);
-            localStorage.setItem('sessionId', value.sessionId);
-            localStorage.setItem('crossSessionId', value.crossSessionId);
-            this.router.navigate(['/']);
-          }
-        },
-        error: (e) => {
-          console.log(e?.error?.errorMessage);
-        },
-      });
+    this.authService.login(this.loginForm);
   }
 }
