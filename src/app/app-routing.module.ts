@@ -22,6 +22,7 @@ const routes: Routes = [
   },
   {
     path: '**',
+    canActivate: [authGuard],
     component: ErrorComponent,
     title: 'Error 404',
   },

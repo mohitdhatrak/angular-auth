@@ -11,15 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent implements OnInit {
   currentURL = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
-
-  handleButtonClick(route: any) {
-    this.router.navigate([route]);
-  }
-
-  logUserOut() {
-    this.authService.logout();
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.router.events
@@ -27,5 +19,13 @@ export class NavbarComponent implements OnInit {
       .subscribe(() => {
         this.currentURL = this.router.url;
       });
+  }
+
+  handleButtonClick(route: any) {
+    this.router.navigate([route]);
+  }
+
+  logUserOut() {
+    this.authService.logout();
   }
 }

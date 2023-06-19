@@ -10,10 +10,10 @@
     />
   </section>
   <section class="login-right-container">
-    <mat-card [style.boxShadow]="'none'">
+    <mat-card class="login-card">
       <mat-card-content>
         <h1 class="login-form-title">Log in</h1>
-        <form [formGroup]="loginForm" (submit)="userLogin()" name="loginForm">
+        <form [formGroup]="loginForm" (ngSubmit)="userLogin()" name="loginForm">
           <div>
             <span class="material-icons md-18 login-icons">mail_outlined</span>
             <mat-form-field class="login-form-input">
@@ -26,7 +26,7 @@
                 required
               />
               <mat-error *ngIf="loginForm.controls['email'].invalid">{{
-                getErrorMessage("email")
+                getErrorMessage(loginForm.controls["email"], "email")
               }}</mat-error>
             </mat-form-field>
           </div>
@@ -55,7 +55,7 @@
                 >
               </button>
               <mat-error *ngIf="loginForm.controls['password'].invalid">{{
-                getErrorMessage("password")
+                getErrorMessage(loginForm.controls["password"], "password")
               }}</mat-error>
             </mat-form-field>
           </div>

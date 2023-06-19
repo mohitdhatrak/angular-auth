@@ -1,49 +1,65 @@
-import { Component } from '@angular/core';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  Validators,
+  FormControl,
+  FormGroup,
+  AbstractControl,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { validateForm } from '../validate-form';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
-  hide = true;
+export class LoginComponent implements OnInit {
+  hide: boolean = true;
 
-  loginForm = new FormGroup({
+  regexEmail: RegExp = /^[w#!%$'&+*-/?^`.{|}~=]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+  regexPassword: RegExp =
+    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=S+$).*$/;
+
+  loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
+      // Validators.pattern(this.regexPassword),
     ]),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  getErrorMessage(text: string) {
-    if (text === 'email') {
-      if (this.loginForm.controls['email'].hasError('required')) {
-        return 'You must enter a value';
-      }
-      return this.loginForm.controls['email'].hasError('email')
-        ? 'Not a valid email'
-        : '';
-    } else {
-      if (this.loginForm.controls['password'].hasError('required')) {
-        return 'You must enter a value';
-      }
-      return this.loginForm.controls['password'].hasError('minlength')
-        ? 'Not a valid password'
-        : '';
-    }
+  getErrorMessage(control: AbstractControl, input: string): string {
+    return validateForm(control, input);
   }
 
-  userLogin() {
-    if (!this.loginForm.valid) {
+  userLogin(): void {
+    if (this.loginForm.invalid) {
       console.log('Data not valid!');
       return;
     }
 
-    this.authService.login(this.loginForm);
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (value: any) => {
+        if (value.sessionId) {
+          console.log(value);
+          localStorage.setItem('sessionId', value.sessionId);
+          localStorage.setItem('crossSessionId', value.crossSessionId);
+          this.router.navigate(['/main']); // not working
+        }
+      },
+      error: (e: any) => {
+        console.log(e?.error?.errorMessage);
+      },
+    });
+  }
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/main']);
+    }
   }
 }

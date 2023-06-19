@@ -37,6 +37,10 @@
   align-items: center;
 }
 
+.login-card {
+  box-shadow: none;
+}
+
 .login-form-title {
   font-size: 2.2rem;
   font-weight: 800;

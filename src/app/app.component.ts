@@ -8,7 +8,7 @@ import { NavbarComponent } from './modules/shared/navbar/navbar.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'angular-auth';
+  title: string = 'angular-auth';
 
   constructor(private authService: AuthService) {}
 

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -9,13 +9,13 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { SignupComponent } from 'src/app/modules/auth/signup/signup.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { OtpComponent } from './otp/otp.component';
 
 @NgModule({
-  declarations: [LoginComponent, SignupComponent],
+  declarations: [LoginComponent, SignupComponent, OtpComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     AuthRoutingModule,
     MatFormFieldModule,
     MatInputModule,
