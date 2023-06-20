@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { validateForm } from '../validate-form';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,11 @@ export class LoginComponent implements OnInit {
     ]),
   });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   getErrorMessage(control: AbstractControl, input: string): string {
     return validateForm(control, input);
@@ -39,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   userLogin(): void {
     if (this.loginForm.invalid) {
-      console.log('Data not valid!');
+      this.snackBar.open('Form incomplete or incorrect!', 'Close');
       return;
     }
 
@@ -49,11 +54,14 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('sessionId', value.sessionId);
           localStorage.setItem('crossSessionId', value.crossSessionId);
           this.authService.currentUser$.next(true); // navigate works after updating this
+          this.snackBar.open('Login successful', 'Close');
           this.router.navigate(['/main']);
         }
       },
       error: (e: any) => {
-        console.log(e?.error?.errorMessage);
+        if (e?.error?.errorCode === 'ERR_PLATFORM_GEN_UNAUTHENTICATED') {
+          this.snackBar.open('Invalid credentials!', 'Close');
+        }
       },
     });
   }

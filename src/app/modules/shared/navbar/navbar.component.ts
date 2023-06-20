@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,7 +12,11 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent implements OnInit {
   currentURL = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.router.events
@@ -27,5 +32,6 @@ export class NavbarComponent implements OnInit {
 
   logUserOut() {
     this.authService.logout();
+    this.snackBar.open('User logged out!', 'Close', { duration: 3000 });
   }
 }

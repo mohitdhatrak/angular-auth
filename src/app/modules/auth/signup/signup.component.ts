@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { validateForm } from '../validate-form';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signup',
@@ -63,7 +64,11 @@ export class SignupComponent implements OnInit {
     dob: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   getErrorMessage(control: AbstractControl, input: string): string {
     return validateForm(control, input);
@@ -71,7 +76,7 @@ export class SignupComponent implements OnInit {
 
   userRegister(): void {
     if (this.signupForm.invalid) {
-      console.log('Data not valid!');
+      this.snackBar.open('Form incomplete or incorrect!', 'Close');
       return;
     }
 
@@ -81,11 +86,20 @@ export class SignupComponent implements OnInit {
           // value.id is param to otp
           // value.responseDTO.modeKey is header
           this.authService.newUserData = { ...value };
+          this.snackBar.open('OTP sent for verification!', 'Close');
           this.router.navigate(['/auth/register/otp']);
         }
       },
       error: (e: any) => {
         console.log(e?.error?.errorMessage);
+        if (e?.error?.errorMessage.includes('login name')) {
+          this.snackBar.open(
+            'Email already registered, login instead!',
+            'Close'
+          );
+        } else if (e?.error?.errorMessage.includes('Contact Number')) {
+          this.snackBar.open('Mobile number already registered!', 'Close');
+        }
       },
     });
   }

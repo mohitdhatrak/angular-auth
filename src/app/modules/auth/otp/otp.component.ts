@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { validateForm } from '../validate-form';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-otp',
@@ -24,7 +25,11 @@ export class OtpComponent implements OnInit {
     Validators.pattern(this.regexOtp),
   ]);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   getErrorMessage(control: AbstractControl, input: string): string {
     return validateForm(control, input);
@@ -32,21 +37,39 @@ export class OtpComponent implements OnInit {
 
   checkOtp(): void {
     if (this.otp.invalid) {
-      console.log('Otp not valid!');
+      this.snackBar.open('Enter OTP correctly!', 'Close');
       return;
     }
 
     this.authService.checkOtp(this.otp.value).subscribe({
       next: (response: any) => {
-        if (response) {
-          console.log(response);
-          this.router.navigate(['/main']);
+        if (response === 'User has been activated successfully') {
+          this.snackBar.open('User verified successfully!', 'Close');
+          this.logUserIn();
         }
       },
       error: (e: any) => {
         // getting response as text, as on success response is text
         // so here we need to parse the string to get JSON
-        console.log(JSON.parse(e?.error)?.errorMessage);
+        if (JSON.parse(e?.error)?.errorMessage === 'Invalid OTP') {
+          this.snackBar.open('Incorrect OTP!', 'Close');
+        }
+      },
+    });
+  }
+
+  // this is giving error, that user email is not valid, even after successful register
+  // i checked, the emails i register with my signup, don't work in login
+  // but the ones i create using main website work, no invalid login error
+  logUserIn() {
+    this.authService.loginNewUser().subscribe({
+      next: (value: any) => {
+        if (value.sessionId) {
+          localStorage.setItem('sessionId', value.sessionId);
+          localStorage.setItem('crossSessionId', value.crossSessionId);
+          this.authService.currentUser$.next(true); // navigate works after updating this
+          this.router.navigate(['/main']);
+        }
       },
     });
   }

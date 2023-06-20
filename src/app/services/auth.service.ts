@@ -13,7 +13,9 @@ export class AuthService {
   newUserData: any = {
     id: 0,
     responseDTO: { modeKey: '' },
+    login: '',
   };
+  newUserPassword: string = '';
 
   currentUser$ = new BehaviorSubject<boolean>(false); // read: vs Subject difference
   constructor(private http: HttpClient, private router: Router) {}
@@ -39,7 +41,6 @@ export class AuthService {
       password: loginData.password,
       tenantLogin: 'world',
     };
-    console.log(finalData);
 
     const params = new HttpParams().set('crossTenant', 'uandi');
 
@@ -90,13 +91,15 @@ export class AuthService {
         },
       ],
     };
-    console.log(finalData);
+
+    this.newUserPassword = signupData.password;
 
     const params = new HttpParams().set('tenantName', 'world');
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('X-PASS', `Bearer ${this.token}`);
+    // doubt: what to pass in X-PASS? How is token relevant in register?
 
     return this.http.post(
       `${this.baseURL}/commons-iam-service/api/v1/obo/register`,
@@ -107,7 +110,6 @@ export class AuthService {
 
   checkOtp(otp: any): Observable<any> {
     const params = new HttpParams().set('userId', this.newUserData?.id); // number
-    console.log(typeof this.newUserData?.id, this.newUserData?.id);
 
     const headers = new HttpHeaders()
       .set('modKey', this.newUserData?.responseDTO.modKey)
@@ -116,8 +118,24 @@ export class AuthService {
 
     return this.http.post(
       `${this.baseURL}/commons-iam-service/api/v1/obo/activate-user`,
-      { otp },
+      {},
       { params, headers, responseType: 'text' }
+    );
+  }
+
+  loginNewUser(): Observable<any> {
+    const finalData: LoginForm = {
+      userLogin: this.newUserData?.login,
+      password: this.newUserPassword,
+      tenantLogin: 'world',
+    };
+
+    const params = new HttpParams().set('crossTenant', 'uandi');
+
+    return this.http.post(
+      `${this.baseURL}/commons-iam-service/api/v1/obo/cross/login`,
+      finalData,
+      { params }
     );
   }
 }

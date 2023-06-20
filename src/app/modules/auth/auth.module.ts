@@ -5,6 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
 
 import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { SignupComponent } from 'src/app/modules/auth/signup/signup.component';
@@ -21,8 +25,11 @@ import { AuthRoutingModule } from './auth-routing.module';
     MatInputModule,
     MatCardModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   exports: [LoginComponent, SignupComponent],
-  providers: [],
+  providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
+  ],
 })
 export class AuthModule {}
