@@ -1,0 +1,107 @@
+.app-content {
+  display: flex;
+  gap: 5rem;
+
+  justify-content: center;
+}
+
+.otp-left-container {
+  width: 50%;
+  /* margin-left: ; */
+
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10rem;
+}
+
+.otp-text {
+  width: 50%;
+  margin-top: 8rem;
+  font-size: 1.6rem;
+  line-height: 2rem;
+}
+
+.otp-image {
+  width: 75%;
+}
+
+.otp-right-container {
+  width: 50%;
+  margin-top: 5rem;
+  padding-left: 5rem;
+  box-shadow: none;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.otp-card {
+  box-shadow: none;
+}
+
+.otp-form-title {
+  width: 15rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.otp-multiple-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  width: 20rem;
+}
+
+.otp-icons {
+  margin: 0 0.5rem;
+}
+
+.otp-form-input {
+  width: 20rem;
+  max-width: 80%;
+  margin: 0.5rem 0;
+}
+
+.otp-eye-btn {
+  cursor: pointer;
+  border: none;
+}
+
+.otp-submit-btn {
+  display: block;
+  width: 90%;
+  background-color: #4d89eb;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.8rem 1rem;
+  margin: 0 auto;
+  margin-top: 3rem;
+}
+
+@media screen and (max-width: 600px) {
+  .otp-left-container {
+    display: none;
+  }
+
+  .app-content {
+    gap: 0;
+  }
+
+  .otp-right-container {
+    width: 40rem;
+    max-width: 90%;
+    display: flex;
+    padding: 0;
+    margin-top: 3rem;
+    justify-content: center;
+  }
+}

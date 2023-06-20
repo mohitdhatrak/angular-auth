@@ -21,16 +21,31 @@ export function validateForm(control: AbstractControl, input: string): string {
       break;
 
     case 'confirmPassword':
-      if (control.hasError('doesPasswordMatch')) {
+      if (control.hasError('passwordNotMatching')) {
         return 'Password does not match!';
       }
       break;
 
+    case 'firstName' || 'lastName':
+      if (control.hasError('pattern')) {
+        return 'Name can only consist of alphabets, no white spaces!';
+      }
+      break;
+
     case 'mobileNumber':
-      if (control.hasError('minlength')) {
-        return 'Number has to be atleast 10 digits long!';
-      } else if (control.hasError('pattern')) {
+      if (control.hasError('pattern')) {
         return 'Mobile number is invalid!';
+      }
+      break;
+
+    case 'otp':
+      if (control.hasError('pattern')) {
+        return 'OTP contains digits only, no spaces!';
+      } else if (
+        control.hasError('minlength') ||
+        control.hasError('maxlength')
+      ) {
+        return 'OTP must have 6 digits!';
       }
       break;
 

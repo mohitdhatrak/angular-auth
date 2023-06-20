@@ -18,7 +18,13 @@
       </button>
     </ng-template>
     <ng-template #logoutBtn>
-      <button (click)="logUserOut()" class="app-nav-btn">Log out</button>
+      <button
+        *ngIf="currentURL !== '/auth/register/otp'"
+        (click)="logUserOut()"
+        class="app-nav-btn"
+      >
+        Log out
+      </button>
     </ng-template>
   </ng-template>
 </header>

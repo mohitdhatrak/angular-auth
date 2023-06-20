@@ -1,13 +1,3 @@
-// export interface AuthForm {
-//   email: string;
-//   password: string;
-//   firstName?: string;
-//   lastName?: string;
-//   confirmPassword?: string;
-//   phoneNumber?: number;
-//   dob?: string;
-// }
-
 export interface LoginForm {
   userLogin: string;
   password: string;

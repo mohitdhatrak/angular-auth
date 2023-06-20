@@ -1,1 +1,38 @@
-<p>otp works!</p>
+<div class="app-content">
+  <section class="otp-left-container">
+    <p class="otp-text">
+      Join our community of volunteers and change makers of tomorrow.
+    </p>
+    <img
+      src="../../assets/login-image.png"
+      alt="OTP page image"
+      class="otp-image"
+    />
+  </section>
+  <section class="otp-right-container">
+    <mat-card class="otp-card">
+      <mat-card-content>
+        <h1 class="otp-form-title">
+          We have sent a verification code to your Email to confirm it's you
+        </h1>
+        <div>
+          <mat-form-field class="otp-form-input">
+            <mat-label for="otp">Enter OTP: </mat-label>
+            <input
+              matInput
+              placeholder="OTP"
+              id="otp"
+              [formControl]="otp"
+              required
+            />
+            <mat-error *ngIf="otp.invalid">
+              {{ getErrorMessage(otp, "otp") }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button (click)="checkOtp()" class="otp-submit-btn">Verify</button>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

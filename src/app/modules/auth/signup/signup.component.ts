@@ -3,6 +3,7 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,30 +19,38 @@ export class SignupComponent implements OnInit {
   hide1: boolean = true;
   hide2: boolean = true;
 
-  regexEmail: RegExp = /^[w#!%$'&+*-/?^`.{|}~=]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+  regexEmail: RegExp =
+    /^[\w#!%\$'&\+\*-/\?\^`\.\{\|\}~=]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+$/;
   regexPassword: RegExp =
-    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=S+$).*$/;
-  // regexPhone: string = '/^(0|+?91 ?)?[6-9][0-9]{4} ?[0-9]{5}$/';
+    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=\S+$).*$/;
+  regexPhone: RegExp = /^(0|\+?91 ?)?[6-9][0-9]{4} ?[0-9]{5}$/;
+  regexName: RegExp = /^[A-Za-z]+$/;
 
-  doesPasswordMatch(control: FormControl): { [key: string]: boolean } | null {
-    const password = control.root.get('password');
+  // custom validator function
+  doesPasswordMatch(control: AbstractControl): ValidationErrors | null {
+    const password = control.root.get('password')?.value;
     const confirmPassword = control.value;
 
-    if (password && confirmPassword && password.value !== confirmPassword) {
-      return { doesPasswordMatch: true }; // Return error object if passwords don't match
+    if (password && confirmPassword && password !== confirmPassword) {
+      // Return a validation error object if the condition fails
+      return { passwordNotMatching: true };
     }
 
-    return null; // Return null if passwords match
+    return null; // Return null if validation passes
   }
 
+  // read: inline regex validation
   signupForm: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl(''),
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(this.regexName),
+    ]),
+    lastName: new FormControl('', Validators.pattern(this.regexName)),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
-      // Validators.pattern(this.regexPassword),
+      Validators.pattern(this.regexPassword),
     ]),
     confirmPassword: new FormControl('', [
       Validators.required,
@@ -49,8 +58,7 @@ export class SignupComponent implements OnInit {
     ]),
     mobileNumber: new FormControl('', [
       Validators.required,
-      Validators.minLength(10),
-      // Validators.pattern(this.regexPhone),
+      Validators.pattern(this.regexPhone),
     ]),
     dob: new FormControl(''),
   });
@@ -69,9 +77,11 @@ export class SignupComponent implements OnInit {
 
     this.authService.register(this.signupForm.value).subscribe({
       next: (value: any) => {
-        if (value.sessionId) {
-          console.log(value);
-          // this.router.navigate(['/auth/register/otp']);
+        if (value.id) {
+          // value.id is param to otp
+          // value.responseDTO.modeKey is header
+          this.authService.newUserData = { ...value };
+          this.router.navigate(['/auth/register/otp']);
         }
       },
       error: (e: any) => {

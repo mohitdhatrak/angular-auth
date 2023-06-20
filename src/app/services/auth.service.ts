@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,11 +8,18 @@ import { LoginForm, SignupForm } from '../modules/auth/AuthForm';
   providedIn: 'root',
 })
 export class AuthService {
-  currentUser$ = new BehaviorSubject<boolean>(false);
+  baseURL: string = 'https://dev.platformcommons.org/gateway';
+  token: string | null = localStorage.getItem('sessionId');
+  newUserData: any = {
+    id: 0,
+    responseDTO: { modeKey: '' },
+  };
+
+  currentUser$ = new BehaviorSubject<boolean>(false); // read: vs Subject difference
   constructor(private http: HttpClient, private router: Router) {}
 
   setUser(): void {
-    if (localStorage.getItem('sessionId')) {
+    if (this.token) {
       this.currentUser$.next(true);
     } else {
       this.currentUser$.next(false);
@@ -34,9 +41,12 @@ export class AuthService {
     };
     console.log(finalData);
 
+    const params = new HttpParams().set('crossTenant', 'uandi');
+
     return this.http.post(
-      'https://dev.platformcommons.org/gateway/commons-iam-service/api/v1/obo/cross/login?crossTenant=uandi',
-      finalData
+      `${this.baseURL}/commons-iam-service/api/v1/obo/cross/login`,
+      finalData,
+      { params }
     );
   }
 
@@ -44,7 +54,7 @@ export class AuthService {
     localStorage.removeItem('sessionId');
     localStorage.removeItem('crossSessionId');
     this.currentUser$.next(false);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/auth']);
   }
 
   register(signupData: any): Observable<any> {
@@ -82,9 +92,32 @@ export class AuthService {
     };
     console.log(finalData);
 
+    const params = new HttpParams().set('tenantName', 'world');
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('X-PASS', `Bearer ${this.token}`);
+
     return this.http.post(
-      'https://dev.platformcommons.org/gateway/commons-iam-service/api/v1/obo/register?tenantName=world',
-      finalData
+      `${this.baseURL}/commons-iam-service/api/v1/obo/register`,
+      finalData,
+      { params, headers }
+    );
+  }
+
+  checkOtp(otp: any): Observable<any> {
+    const params = new HttpParams().set('userId', this.newUserData?.id); // number
+    console.log(typeof this.newUserData?.id, this.newUserData?.id);
+
+    const headers = new HttpHeaders()
+      .set('modKey', this.newUserData?.responseDTO.modKey)
+      .set('otp', otp) // string
+      .set('tenantName', 'world');
+
+    return this.http.post(
+      `${this.baseURL}/commons-iam-service/api/v1/obo/activate-user`,
+      { otp },
+      { params, headers, responseType: 'text' }
     );
   }
 }

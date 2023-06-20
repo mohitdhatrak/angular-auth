@@ -29,6 +29,11 @@
                 formControlName="firstName"
                 required
               />
+              <mat-error *ngIf="signupForm.controls['firstName'].invalid">
+                {{
+                  getErrorMessage(signupForm.controls["firstName"], "firstName")
+                }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="signup-form-input">
               <mat-label for="lastName">Last name</mat-label>
@@ -37,12 +42,13 @@
                 placeholder="Doe"
                 id="lastName"
                 formControlName="lastName"
-            /></mat-form-field>
-            <!-- <mat-error *ngIf="signupForm.controls['firstName'].invalid">
-              {{
-                getErrorMessage(signupForm.controls["firstName"], "firstName")
-              }}
-            </mat-error> -->
+              />
+              <mat-error *ngIf="signupForm.controls['lastName'].invalid">
+                {{
+                  getErrorMessage(signupForm.controls["lastName"], "lastName")
+                }}
+              </mat-error>
+            </mat-form-field>
           </div>
           <div>
             <span class="material-icons md-18 signup-icons">mail</span>
@@ -129,7 +135,6 @@
               <input
                 matInput
                 id="mobileNumber"
-                type="number"
                 formControlName="mobileNumber"
                 required
               />

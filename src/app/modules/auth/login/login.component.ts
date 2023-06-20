@@ -17,16 +17,17 @@ import { validateForm } from '../validate-form';
 export class LoginComponent implements OnInit {
   hide: boolean = true;
 
-  regexEmail: RegExp = /^[w#!%$'&+*-/?^`.{|}~=]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+  regexEmail: RegExp =
+    /^[\w#!%\$'&\+\*-/\?\^`\.\{\|\}~=]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+$/;
   regexPassword: RegExp =
-    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=S+$).*$/;
+    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=\S+$).*$/;
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
-      // Validators.pattern(this.regexPassword),
+      Validators.pattern(this.regexPassword),
     ]),
   });
 
@@ -45,10 +46,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe({
       next: (value: any) => {
         if (value.sessionId) {
-          console.log(value);
           localStorage.setItem('sessionId', value.sessionId);
           localStorage.setItem('crossSessionId', value.crossSessionId);
-          this.router.navigate(['/main']); // not working
+          this.authService.currentUser$.next(true); // navigate works after updating this
+          this.router.navigate(['/main']);
         }
       },
       error: (e: any) => {

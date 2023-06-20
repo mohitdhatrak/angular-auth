@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
 
 import { LoginComponent } from 'src/app/modules/auth/login/login.component';
 import { SignupComponent } from 'src/app/modules/auth/signup/signup.component';
-import { AuthRoutingModule } from './auth-routing.module';
 import { OtpComponent } from './otp/otp.component';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   declarations: [LoginComponent, SignupComponent, OtpComponent],
