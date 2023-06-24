@@ -26,7 +26,13 @@ export function validateForm(control: AbstractControl, input: string): string {
       }
       break;
 
-    case 'firstName' || 'lastName':
+    case 'firstName':
+      if (control.hasError('pattern')) {
+        return 'Name can only consist of alphabets, no white spaces!';
+      }
+      break;
+
+    case 'lastName':
       if (control.hasError('pattern')) {
         return 'Name can only consist of alphabets, no white spaces!';
       }

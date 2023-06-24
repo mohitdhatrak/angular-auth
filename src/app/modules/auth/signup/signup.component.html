@@ -17,38 +17,46 @@
           [formGroup]="signupForm"
           (ngSubmit)="userRegister()"
           name="signupForm"
+          class="signup-form"
         >
           <div class="signup-multiple-inputs">
-            <span class="material-icons md-18 signup-icons">person</span>
-            <mat-form-field class="signup-form-input">
-              <mat-label for="firstName">First name</mat-label>
-              <input
-                matInput
-                placeholder="John"
-                id="firstName"
-                formControlName="firstName"
-                required
-              />
-              <mat-error *ngIf="signupForm.controls['firstName'].invalid">
-                {{
-                  getErrorMessage(signupForm.controls["firstName"], "firstName")
-                }}
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="signup-form-input">
-              <mat-label for="lastName">Last name</mat-label>
-              <input
-                matInput
-                placeholder="Doe"
-                id="lastName"
-                formControlName="lastName"
-              />
-              <mat-error *ngIf="signupForm.controls['lastName'].invalid">
-                {{
-                  getErrorMessage(signupForm.controls["lastName"], "lastName")
-                }}
-              </mat-error>
-            </mat-form-field>
+            <div class="signup-input-container">
+              <span class="material-icons md-18 signup-icons">person</span>
+              <mat-form-field class="signup-form-input">
+                <mat-label for="firstName">First name</mat-label>
+                <input
+                  matInput
+                  placeholder="John"
+                  id="firstName"
+                  formControlName="firstName"
+                  required
+                />
+                <mat-error *ngIf="signupForm.controls['firstName'].invalid">
+                  {{
+                    getErrorMessage(
+                      signupForm.controls["firstName"],
+                      "firstName"
+                    )
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="signup-input-container">
+              <mat-form-field class="signup-form-input">
+                <mat-label for="lastName">Last name</mat-label>
+                <input
+                  matInput
+                  placeholder="Doe"
+                  id="lastName"
+                  formControlName="lastName"
+                />
+                <mat-error *ngIf="signupForm.controls['lastName'].invalid">
+                  {{
+                    getErrorMessage(signupForm.controls["lastName"], "lastName")
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
           <div>
             <span class="material-icons md-18 signup-icons">mail</span>
@@ -67,66 +75,72 @@
             </mat-form-field>
           </div>
           <div class="signup-multiple-inputs">
-            <span class="material-icons md-18 signup-icons">lock_outlined</span>
-            <mat-form-field class="signup-form-input">
-              <mat-label for="password">Enter your password</mat-label>
-              <input
-                matInput
-                [type]="hide1 ? 'password' : 'text'"
-                id="password"
-                formControlName="password"
-                required
-              />
-              <button
-                mat-icon-button
-                matSuffix
-                (click)="hide1 = !hide1"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide1"
-                class="signup-eye-btn"
-                type="button"
-              >
-                <span class="material-icons md-18 signup-btn">
-                  {{ hide1 ? "visibility_off" : "visibility" }}</span
+            <div class="signup-input-container">
+              <span class="material-icons md-18 signup-icons">lock</span>
+              <mat-form-field class="signup-form-input">
+                <mat-label for="password">Password</mat-label>
+                <input
+                  matInput
+                  [type]="hide1 ? 'password' : 'text'"
+                  id="password"
+                  formControlName="password"
+                  required
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide1 = !hide1"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide1"
+                  class="signup-eye-btn"
+                  type="button"
                 >
-              </button>
-              <mat-error *ngIf="signupForm.controls['password'].invalid">
-                {{
-                  getErrorMessage(signupForm.controls["password"], "password")
-                }}
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="signup-form-input">
-              <mat-label for="confirmPassword">Confirm your password</mat-label>
-              <input
-                matInput
-                [type]="hide2 ? 'password' : 'text'"
-                id="confirmPassword"
-                formControlName="confirmPassword"
-                required
-              />
-              <button
-                mat-icon-button
-                matSuffix
-                (click)="hide2 = !hide2"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide2"
-                class="signup-eye-btn"
-                type="button"
-              >
-                <span class="material-icons md-18 signup-btn">
-                  {{ hide2 ? "visibility_off" : "visibility" }}</span
+                  <span class="material-icons md-18 signup-btn">
+                    {{ hide1 ? "visibility_off" : "visibility" }}</span
+                  >
+                </button>
+                <mat-error *ngIf="signupForm.controls['password'].invalid">
+                  {{
+                    getErrorMessage(signupForm.controls["password"], "password")
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="signup-input-container">
+              <mat-form-field class="signup-form-input">
+                <mat-label for="confirmPassword">Confirm password</mat-label>
+                <input
+                  matInput
+                  [type]="hide2 ? 'password' : 'text'"
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  required
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide2 = !hide2"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide2"
+                  class="signup-eye-btn"
+                  type="button"
                 >
-              </button>
-              <mat-error *ngIf="signupForm.controls['confirmPassword'].invalid">
-                {{
-                  getErrorMessage(
-                    signupForm.controls["confirmPassword"],
-                    "confirmPassword"
-                  )
-                }}
-              </mat-error>
-            </mat-form-field>
+                  <span class="material-icons md-18 signup-btn">
+                    {{ hide2 ? "visibility_off" : "visibility" }}</span
+                  >
+                </button>
+                <mat-error
+                  *ngIf="signupForm.controls['confirmPassword'].invalid"
+                >
+                  {{
+                    getErrorMessage(
+                      signupForm.controls["confirmPassword"],
+                      "confirmPassword"
+                    )
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
           <div>
             <span class="material-icons md-18 signup-icons">phone</span>

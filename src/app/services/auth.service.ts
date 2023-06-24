@@ -9,7 +9,6 @@ import { LoginForm, SignupForm } from '../modules/auth/AuthForm';
 })
 export class AuthService {
   baseURL: string = 'https://dev.platformcommons.org/gateway';
-  token: string | null = localStorage.getItem('sessionId');
   newUserData: any = {
     id: 0,
     responseDTO: { modeKey: '' },
@@ -21,7 +20,8 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   setUser(): void {
-    if (this.token) {
+    const token: string | null = localStorage.getItem('sessionId');
+    if (token) {
       this.currentUser$.next(true);
     } else {
       this.currentUser$.next(false);
@@ -98,8 +98,7 @@ export class AuthService {
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('X-PASS', `Bearer ${this.token}`);
-    // doubt: what to pass in X-PASS? How is token relevant in register?
+      .set('X-PASS', `${signupData.password}`);
 
     return this.http.post(
       `${this.baseURL}/commons-iam-service/api/v1/obo/register`,

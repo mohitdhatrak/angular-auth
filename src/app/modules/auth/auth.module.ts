@@ -29,7 +29,13 @@ import { AuthRoutingModule } from './auth-routing.module';
   ],
   exports: [LoginComponent, SignupComponent],
   providers: [
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        duration: 3000,
+        // verticalPosition: 'top',
+      },
+    },
   ],
 })
 export class AuthModule {}

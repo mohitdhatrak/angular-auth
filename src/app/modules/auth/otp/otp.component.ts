@@ -68,6 +68,8 @@ export class OtpComponent implements OnInit {
           localStorage.setItem('sessionId', value.sessionId);
           localStorage.setItem('crossSessionId', value.crossSessionId);
           this.authService.currentUser$.next(true); // navigate works after updating this
+          this.authService.newUserData = {};
+          this.authService.newUserPassword = '';
           this.router.navigate(['/main']);
         }
       },

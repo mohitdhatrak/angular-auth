@@ -30,8 +30,6 @@
 .signup-right-container {
   width: 50%;
   margin-top: 5rem;
-  padding-left: 5rem;
-  box-shadow: none;
 
   display: inline-flex;
   align-items: center;
@@ -39,6 +37,12 @@
 
 .signup-card {
   box-shadow: none;
+}
+
+.signup-form {
+  width: 40rem;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .signup-form-title {
@@ -50,11 +54,20 @@
 
 .signup-multiple-inputs {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  gap: 1rem;
+  /* gap: 1rem; */
 
+  width: 30rem;
+  max-width: 100%;
+}
+
+.signup-input-container {
+  display: flex;
+  align-items: center;
   width: 20rem;
+  max-width: 50%;
+  margin: 0.5rem 0;
 }
 
 .signup-icons {
@@ -62,8 +75,15 @@
 }
 
 .signup-form-input {
-  width: 20rem;
+  width: 30rem;
   max-width: 80%;
+  margin: 0.5rem 0;
+  margin-left: 1rem;
+}
+
+.signup-multiple-inputs > .signup-form-input {
+  width: 15rem;
+  max-width: 40%;
   margin: 0.5rem 0;
 }
 
@@ -74,7 +94,7 @@
 
 .signup-submit-btn {
   display: block;
-  width: 90%;
+  width: 80%;
   background-color: #4d89eb;
   color: #ffffff;
   border-radius: 0.5rem;
@@ -83,24 +103,64 @@
   text-align: center;
   padding: 0.8rem 1rem;
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
   .signup-left-container {
     display: none;
   }
 
   .app-content {
-    gap: 0;
+    display: block;
   }
 
   .signup-right-container {
     width: 40rem;
     max-width: 90%;
-    display: flex;
     padding: 0;
-    margin-top: 3rem;
+    display: block;
+    margin: 5rem auto;
+  }
+
+  .signup-form {
+    width: 30rem;
+    max-width: 100%;
+  }
+
+  .signup-form-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-left: 1rem;
+    margin-bottom: 5rem;
+  }
+
+  .signup-multiple-inputs {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    /* align-items: center; */
+
+    width: 30rem;
+    max-width: 100%;
+  }
+
+  .signup-input-container {
+    display: flex;
+
+    width: 30rem;
+    max-width: 100%;
+  }
+
+  .signup-input-container:nth-child(2) {
+    width: 100%;
     justify-content: center;
+    margin-top: 0;
+  }
+
+  .signup-input-container:nth-child(2) > .signup-form-input {
+    width: 100%;
+    /* justify-content: center; */
+    margin: 0;
   }
 }
